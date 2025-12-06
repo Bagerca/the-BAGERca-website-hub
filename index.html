@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bagerca Hub</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Шрифт Inter для премиального вида -->
+    <!-- Шрифт Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
@@ -18,7 +18,7 @@
         <!-- Шапка -->
         <header class="profile-header">
             <div class="avatar">
-                <!-- Замени ссылку ниже на свою аватарку с GitHub -->
+                <!-- Твоя аватарка подтягивается с GitHub -->
                 <img src="https://github.com/bagerca.png" alt="Bagerca">
             </div>
             <h1>Bagerca<span class="dot">.</span>Hub</h1>
@@ -36,7 +36,7 @@
 
         <!-- Сетка проектов -->
         <div class="grid" id="project-grid">
-            <!-- Сюда JavaScript будет вставлять карточки -->
+            <!-- JS вставит карточки сюда -->
         </div>
 
         <footer>
@@ -46,15 +46,37 @@
 
     <script>
         // === БАЗА ДАННЫХ ПРОЕКТОВ ===
-        // featured: true делает карточку широкой (на 2 колонки)
         const projects = [
             {
                 title: "XOXO Messenger",
                 category: "app",
                 url: "https://bagerca.github.io/XOXO-Messenger/",
                 desc: "Современный мессенджер с уникальным UI.",
-                emoji: "💬",
-                featured: true 
+                // Вставляем твой SVG логотип
+                icon: `
+                <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="brand_grad" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
+                            <stop offset="0%" stop-color="#ff4b6a" />
+                            <stop offset="50%" stop-color="#8A2BE2" />
+                            <stop offset="100%" stop-color="#00f2ff" />
+                        </linearGradient>
+                        <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+                            <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                            <feMerge>
+                                <feMergeNode in="coloredBlur"/>
+                                <feMergeNode in="SourceGraphic"/>
+                            </feMerge>
+                        </filter>
+                    </defs>
+                    <g filter="url(#glow)">
+                        <path d="M50 90C22 70 8 55 8 36C8 19 21 9 35 9C43 9 49 13 50 16C51 13 57 9 65 9C79 9 92 19 92 36C92 55 78 70 50 90Z" 
+                              stroke="url(#brand_grad)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="rgba(255,255,255,0.03)"/>
+                        <path d="M28 32 L40 46 M40 32 L28 46" stroke="white" stroke-width="4" stroke-linecap="round" stroke-opacity="0.9"/>
+                        <circle cx="70" cy="39" r="8" stroke="white" stroke-width="4" fill="none" stroke-opacity="0.9"/>
+                    </g>
+                </svg>`,
+                featured: true // Широкая карточка
             },
             {
                 title: "Crazy Wall",
@@ -154,7 +176,7 @@
             }
         ];
 
-        // === ЛОГИКА ===
+        // === ЛОГИКА ОТРИСОВКИ ===
         const grid = document.getElementById('project-grid');
         const buttons = document.querySelectorAll('.filter-btn');
 
@@ -168,11 +190,13 @@
                     card.target = "_blank";
                     card.className = `card ${project.featured ? 'featured' : ''}`;
                     
-                    // Если хочешь картинки вместо эмодзи, замени <div class="card-icon">...</div> на <img>
+                    // Проверяем: если есть icon (svg), используем его, иначе emoji
+                    const iconHtml = project.icon ? project.icon : project.emoji;
+
                     card.innerHTML = `
                         <div class="card-content">
                             <div class="card-top">
-                                <div class="card-icon">${project.emoji}</div>
+                                <div class="card-icon">${iconHtml}</div>
                                 <div class="arrow">↗</div>
                             </div>
                             <div class="card-text">
@@ -186,7 +210,7 @@
             });
         }
 
-        // Обработка кликов по фильтрам
+        // Обработчики кнопок
         buttons.forEach(btn => {
             btn.addEventListener('click', () => {
                 buttons.forEach(b => b.classList.remove('active'));
@@ -195,7 +219,7 @@
             });
         });
 
-        // Запуск при загрузке
+        // Старт
         renderProjects();
     </script>
 </body>
