@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bagerca Hub</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Шрифт Inter для премиального вида -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="background-glow"></div>
+
+    <div class="container">
+        <!-- Шапка -->
+        <header class="profile-header">
+            <div class="avatar">
+                <!-- Замени ссылку ниже на свою аватарку с GitHub -->
+                <img src="https://github.com/bagerca.png" alt="Bagerca">
+            </div>
+            <h1>Bagerca<span class="dot">.</span>Hub</h1>
+            <p class="bio">Frontend Developer & Creative Coder. Коллекция моих проектов, утилит и экспериментов.</p>
+        </header>
+
+        <!-- Фильтры -->
+        <nav class="filters">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="app">Apps</button>
+            <button class="filter-btn" data-filter="tool">Tools</button>
+            <button class="filter-btn" data-filter="creative">Creative</button>
+            <button class="filter-btn" data-filter="landing">Promo</button>
+        </nav>
+
+        <!-- Сетка проектов -->
+        <div class="grid" id="project-grid">
+            <!-- Сюда JavaScript будет вставлять карточки -->
+        </div>
+
+        <footer>
+            <p>© 2025 Bagerca. Built with style.</p>
+        </footer>
+    </div>
+
+    <script>
+        // === БАЗА ДАННЫХ ПРОЕКТОВ ===
+        // featured: true делает карточку широкой (на 2 колонки)
+        const projects = [
+            {
+                title: "XOXO Messenger",
+                category: "app",
+                url: "https://bagerca.github.io/XOXO-Messenger/",
+                desc: "Современный мессенджер с уникальным UI.",
+                emoji: "💬",
+                featured: true 
+            },
+            {
+                title: "Crazy Wall",
+                category: "creative",
+                url: "https://bagerca.github.io/Crazy-Wall/",
+                desc: "Интерактивная детективная доска.",
+                emoji: "🕵️‍♂️",
+                featured: true
+            },
+            {
+                title: "Music Player",
+                category: "app",
+                url: "https://bagerca.github.io/Music-Player/",
+                desc: "Кастомный веб-плеер для музыки.",
+                emoji: "🎵",
+                featured: false
+            },
+            {
+                title: "Heart QR Generator",
+                category: "tool",
+                url: "https://bagerca.github.io/Heart-QR-Code-Generator/",
+                desc: "Генератор QR-кодов в форме сердца.",
+                emoji: "❤️",
+                featured: false
+            },
+            {
+                title: "NFC Message",
+                category: "tool",
+                url: "https://bagerca.github.io/NFC-message/",
+                desc: "Утилита для работы с NFC метками.",
+                emoji: "📡",
+                featured: false
+            },
+            {
+                title: "Sovremennik Cinema",
+                category: "landing",
+                url: "https://bagerca.github.io/Sovremennik-Fan-Cinema/",
+                desc: "Фан-страница кинотеатра.",
+                emoji: "🍿",
+                featured: false
+            },
+            {
+                title: "KsushaSher Streamer",
+                category: "landing",
+                url: "https://bagerca.github.io/-KsushaSher-Streamer/",
+                desc: "Портфолио для стримера.",
+                emoji: "🎮",
+                featured: false
+            },
+            {
+                title: "Bendy Chronicles",
+                category: "creative",
+                url: "https://bagerca.github.io/Bendy-Chronicles-RU/",
+                desc: "Фан-проект по вселенной Bendy.",
+                emoji: "✒️",
+                featured: false
+            },
+            {
+                title: "List of Students",
+                category: "tool",
+                url: "https://bagerca.github.io/List-of-Students/",
+                desc: "Система управления списком студентов.",
+                emoji: "📝",
+                featured: false
+            },
+            {
+                title: "Dine Relax",
+                category: "landing",
+                url: "https://bagerca.github.io/Dine-Relax/",
+                desc: "Лендинг для ресторана.",
+                emoji: "🥗",
+                featured: false
+            },
+            {
+                title: "Valentay Day",
+                category: "creative",
+                url: "https://bagerca.github.io/Valentay-Day/",
+                desc: "Интерактивная валентинка.",
+                emoji: "💘",
+                featured: false
+            },
+            {
+                title: "X Post Picture",
+                category: "tool",
+                url: "https://bagerca.github.io/X-post-picture/",
+                desc: "Генератор картинок для постов.",
+                emoji: "🖼️",
+                featured: false
+            },
+            {
+                title: "The Old Pawnbroker",
+                category: "creative",
+                url: "https://bagerca.github.io/The-old-pawnbroker/",
+                desc: "Атмосферный веб-проект.",
+                emoji: "🕰️",
+                featured: false
+            }
+        ];
+
+        // === ЛОГИКА ===
+        const grid = document.getElementById('project-grid');
+        const buttons = document.querySelectorAll('.filter-btn');
+
+        function renderProjects(filter = 'all') {
+            grid.innerHTML = '';
+            
+            projects.forEach(project => {
+                if (filter === 'all' || project.category === filter) {
+                    const card = document.createElement('a');
+                    card.href = project.url;
+                    card.target = "_blank";
+                    card.className = `card ${project.featured ? 'featured' : ''}`;
+                    
+                    // Если хочешь картинки вместо эмодзи, замени <div class="card-icon">...</div> на <img>
+                    card.innerHTML = `
+                        <div class="card-content">
+                            <div class="card-top">
+                                <div class="card-icon">${project.emoji}</div>
+                                <div class="arrow">↗</div>
+                            </div>
+                            <div class="card-text">
+                                <h3>${project.title}</h3>
+                                <p>${project.desc}</p>
+                            </div>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                }
+            });
+        }
+
+        // Обработка кликов по фильтрам
+        buttons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                buttons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                renderProjects(btn.dataset.filter);
+            });
+        });
+
+        // Запуск при загрузке
+        renderProjects();
+    </script>
+</body>
+</html>
