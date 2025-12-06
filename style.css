@@ -112,7 +112,7 @@ h1 {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 20px;
-    grid-auto-flow: dense; /* Позволяет блокам заполнять пустоты */
+    grid-auto-flow: dense;
 }
 
 /* Карточка */
@@ -131,14 +131,14 @@ h1 {
     backdrop-filter: blur(10px);
 }
 
-/* Большая карточка (Featured) */
+/* Большая карточка */
 .card.featured {
     grid-column: span 2;
 }
 
 @media (max-width: 768px) {
     .card.featured {
-        grid-column: span 1; /* На мобилке все по 1 */
+        grid-column: span 1;
     }
 }
 
@@ -155,10 +155,28 @@ h1 {
     justify-content: space-between;
     align-items: flex-start;
     margin-bottom: 40px;
+    height: 50px; /* Фиксируем высоту заголовка карточки */
 }
 
+/* Иконки (эмодзи) */
 .card-icon {
     font-size: 2.5rem;
+    line-height: 1;
+}
+
+/* Иконки (SVG) */
+.card-icon svg {
+    width: 54px;
+    height: 54px;
+    display: block;
+    /* Коррекция положения для SVG, чтобы выровнять с эмодзи */
+    margin-top: -5px; 
+}
+
+/* Эффект свечения SVG при наведении */
+.card:hover .card-icon svg {
+    filter: drop-shadow(0 0 10px rgba(139, 92, 246, 0.5));
+    transition: filter 0.3s ease;
 }
 
 .arrow {
@@ -190,7 +208,7 @@ h1 {
 footer {
     text-align: center;
     margin-top: 80px;
-    color: var(--text-border);
+    color: var(--card-border);
     font-size: 0.8rem;
     opacity: 0.5;
 }
