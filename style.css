@@ -65,7 +65,7 @@ body {
     animation: float2 20s ease-in-out infinite reverse;
 }
 
-/* === 3. SPOTLIGHT (Фонарик) === */
+/* === 3. SPOTLIGHT (Уменьшенный) === */
 .cursor-glow {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
     pointer-events: none; z-index: -1; transition: background 0.1s ease;
@@ -140,7 +140,7 @@ body {
     .filter-btn { flex-shrink: 0; }
 }
 
-/* === 6. КАРТОЧКИ === */
+/* === 6. КАРТОЧКА === */
 .grid {
     display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 20px; grid-auto-flow: dense; min-height: 200px;
@@ -165,7 +165,7 @@ body {
 
 .card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 25px; height: 48px; }
 
-/* Стандартная иконка */
+/* Иконка */
 .card-icon { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; color: #fff; }
 .card-icon svg { width: 100%; height: 100%; display: block; stroke-width: 1.5; }
 
@@ -206,7 +206,7 @@ body {
     color: var(--tag-text); padding: 4px 10px; border-radius: 6px;
 }
 
-/* === 7. MEDIALOG SPECIAL STYLE (ИСПРАВЛЕНО) === */
+/* === 7. MEDIALOG SPECIAL STYLE (FIXED DOT ANIMATION) === */
 
 /* Разрешаем контейнеру иконки растягиваться под текст */
 .card-medialog .card-icon {
@@ -226,7 +226,7 @@ body {
     display: flex; align-items: center; gap: 12px; position: relative; z-index: 2;
 }
 
-/* ФИКС: Жесткие размеры SVG-иконки */
+/* Жесткие размеры SVG-иконки */
 .ml-icon {
     width: 42px !important; height: 42px !important; min-width: 42px;
     fill: none; stroke: #ffae00; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
@@ -235,8 +235,17 @@ body {
 
 .ml-circle { transform-origin: center; transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
 
-.ml-dot { fill: #ffae00; stroke: none; animation: mlPulse 3s infinite; }
-@keyframes mlPulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.6; transform: scale(0.7); } }
+/* ИСПРАВЛЕННАЯ ТОЧКА */
+.ml-dot {
+    fill: #ffae00; stroke: none;
+    transform-origin: center;
+    transform-box: fill-box;
+    animation: mlPulse 2s infinite ease-in-out;
+}
+@keyframes mlPulse { 
+    0%, 100% { opacity: 1; transform: scale(1); } 
+    50% { opacity: 0.6; transform: scale(0.85); } 
+}
 
 /* Текстовый блок логотипа */
 .ml-text-block { display: flex; flex-direction: column; line-height: 0.9; justify-content: center; }
