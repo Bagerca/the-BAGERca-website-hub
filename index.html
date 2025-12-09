@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bagerca Hub | Creative Developer</title>
     
+    <!-- ИКОНКА САЙТА -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    
     <!-- SEO -->
     <meta name="description" content="Портфолио Bagerca. MediaLog, NFC Tools, Crazy Wall.">
     <meta property="og:type" content="website">
@@ -13,7 +16,6 @@
     
     <link rel="stylesheet" href="style.css">
     
-    <!-- ШРИФТЫ: Inter (для Хаба) + Rajdhani (для лого MediaLog) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Rajdhani:wght@600;700;800&display=swap" rel="stylesheet">
@@ -69,8 +71,7 @@
                 url: "https://bagerca.github.io/MediaLog/index.html",
                 desc: "Личный трекер медиа. Система архивации.",
                 stack: ["App", "Tracker"],
-                // === ПОЛНОЕ ЛОГО MEDIALOG ===
-                // Мы используем спец. разметку, которую стилизуем в CSS
+                // Логотип MediaLog
                 icon: `
                 <div class="ml-logo-wrapper">
                     <svg class="ml-icon" viewBox="0 0 40 40">
@@ -83,9 +84,9 @@
                         <div class="ml-sub">PERSONAL ARCHIVE</div>
                     </div>
                 </div>`,
-                new: true,
+                new: true, // Включает отступ сверху
                 featured: true,
-                customClass: "card-medialog" // Доп. класс для карточки
+                customClass: "card-medialog" 
             },
             {
                 title: "XOXO Messenger",
@@ -222,7 +223,6 @@
         const searchInput = document.getElementById('search-input');
         let currentFilter = 'all';
 
-        // Функция копирования
         window.copyLink = function(event, url) {
             event.preventDefault();
             event.stopPropagation();
@@ -252,7 +252,7 @@
                     const card = document.createElement('a');
                     card.href = project.url;
                     card.target = "_blank";
-                    // Если есть кастомный класс, добавляем его
+                    // Логика классов: если new=true, добавляем .has-new
                     card.className = `card ${project.featured ? 'featured' : ''} ${project.new ? 'has-new' : ''} ${project.customClass || ''}`;
                     card.style.animationDelay = `${count * 0.05}s`;
                     count++;
@@ -300,7 +300,6 @@
             });
         });
 
-        // Spotlight
         const cursorGlow = document.getElementById('cursor-glow');
         document.addEventListener('mousemove', (e) => {
             cursorGlow.style.background = `radial-gradient(350px circle at ${e.clientX}px ${e.clientY}px, rgba(139, 92, 246, 0.15), transparent 50%)`;
