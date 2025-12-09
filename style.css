@@ -6,7 +6,7 @@
     --accent-glow: rgba(139, 92, 246, 0.5);
     
     /* Интерфейс */
-    --card-bg: rgba(20, 20, 25, 0.6); /* Более плотный темный фон */
+    --card-bg: rgba(20, 20, 25, 0.6); /* Плотный полупрозрачный фон */
     --card-border: rgba(255, 255, 255, 0.08);
     --text-main: #ffffff;
     --text-muted: #a1a1aa;
@@ -65,7 +65,7 @@ body {
     animation: float2 20s ease-in-out infinite reverse;
 }
 
-/* === 3. SPOTLIGHT (Уменьшенный) === */
+/* === 3. SPOTLIGHT (Фонарик) === */
 .cursor-glow {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
     pointer-events: none; z-index: -1; transition: background 0.1s ease;
@@ -140,7 +140,7 @@ body {
     .filter-btn { flex-shrink: 0; }
 }
 
-/* === 6. КАРТОЧКА === */
+/* === 6. КАРТОЧКИ === */
 .grid {
     display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 20px; grid-auto-flow: dense; min-height: 200px;
@@ -150,67 +150,40 @@ body {
 @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
 .card {
-    background: var(--card-bg); /* Более плотный фон */
-    border: 1px solid var(--card-border);
-    border-radius: 24px;
-    padding: 24px;
-    text-decoration: none;
-    color: inherit;
-    display: flex; flex-direction: column; position: relative; overflow: hidden;
-    backdrop-filter: blur(20px);
-    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 24px; padding: 24px;
+    text-decoration: none; color: inherit; display: flex; flex-direction: column; position: relative; overflow: hidden;
+    backdrop-filter: blur(20px); transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     animation: fadeInUp 0.5s ease backwards; 
 }
-
 .card.featured { grid-column: span 2; background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02)); }
 @media (max-width: 768px) { .card.featured { grid-column: span 1; } }
 
 .card:hover {
-    transform: translateY(-6px);
-    background: rgba(30, 30, 35, 0.8);
-    border-color: var(--accent-glow);
+    transform: translateY(-6px); background: rgba(30, 30, 35, 0.8); border-color: var(--accent-glow);
     box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.6);
 }
 
-/* Верх карточки */
-.card-top {
-    display: flex; justify-content: space-between; align-items: flex-start;
-    margin-bottom: 25px; height: 48px;
-}
-
-/* Иконка */
-.card-icon {
-    width: 48px; height: 48px; display: flex; align-items: center; justify-content: center;
-    font-size: 2.5rem; color: #fff;
-}
+.card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 25px; height: 48px; }
+.card-icon { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; color: #fff; }
 .card-icon svg { width: 100%; height: 100%; display: block; stroke-width: 1.5; }
 
-/* Действия */
 .card-actions { display: flex; align-items: center; gap: 8px; z-index: 5; }
-
-/* Кнопка Копировать */
 .copy-btn {
-    width: 38px; height: 38px; border-radius: 50%;
-    border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03);
-    color: var(--text-muted); cursor: pointer; transition: 0.2s;
-    display: flex; align-items: center; justify-content: center;
+    width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03);
+    color: var(--text-muted); cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center;
 }
 .copy-btn:hover { background: rgba(255,255,255,0.1); color: #fff; border-color: rgba(255,255,255,0.3); }
 .copy-btn.copied { border-color: #4ade80; background: rgba(74, 222, 128, 0.1); }
 
-/* Стрелка */
 .arrow {
-    width: 38px; height: 38px; border-radius: 50%;
-    border: 1px solid rgba(139, 92, 246, 0.3); background: transparent;
-    color: var(--primary); display: flex; align-items: center; justify-content: center;
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(139, 92, 246, 0.3); background: transparent;
+    color: var(--primary); display: flex; align-items: center; justify-content: center; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 .card:hover .arrow {
     background: var(--primary); color: #fff; border-color: var(--primary);
     transform: rotate(45deg); box-shadow: 0 0 15px rgba(139, 92, 246, 0.4);
 }
 
-/* Бейдж NEW */
 .new-badge {
     position: absolute; top: 12px; left: 12px;
     background: rgba(255, 75, 106, 0.15); border: 1px solid rgba(255, 75, 106, 0.3);
@@ -218,20 +191,69 @@ body {
     padding: 4px 10px; border-radius: 12px; letter-spacing: 0.5px;
     backdrop-filter: blur(4px); pointer-events: none;
 }
+/* Сдвигаем контент вниз, если есть бейдж */
 .card.has-new .card-top { margin-top: 15px; }
 
-/* Текст */
 .card-text-wrapper { flex-grow: 1; margin-bottom: 20px; }
 .card h3 { font-size: 1.3rem; font-weight: 600; margin-bottom: 8px; color: #fff; }
 .card p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.5; }
 
-/* Теги */
 .card-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; }
 .card-tags span {
     font-size: 0.75rem; font-weight: 500; background: var(--tag-bg);
     color: var(--tag-text); padding: 4px 10px; border-radius: 6px;
 }
 
-/* === 7. FOOTER === */
+/* === 7. MEDIALOG SPECIAL STYLE (Золотой Логотип) === */
+.card-medialog .card-icon {
+    width: auto; /* Разрешаем иконке растянуться, так как там текст */
+    justify-content: flex-start;
+}
+
+/* Скрываем стандартный заголовок h3 в этой карточке, так как название в логотипе */
+.card-medialog .card-text-wrapper h3 {
+    display: none;
+}
+
+/* Обёртка лого */
+.ml-logo-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Иконка шестиугольника */
+.ml-icon {
+    width: 42px; height: 42px;
+    fill: none; stroke: #ffae00; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+    transition: 0.3s ease;
+    filter: drop-shadow(0 0 5px rgba(255, 174, 0, 0.3));
+}
+
+/* Круг внутри */
+.ml-circle {
+    transform-origin: center;
+    transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Точка REC */
+.ml-dot {
+    fill: #ffae00; stroke: none;
+    animation: mlPulse 3s infinite;
+}
+@keyframes mlPulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.6; transform: scale(0.7); } }
+
+/* Текстовый блок логотипа */
+.ml-text-block { display: flex; flex-direction: column; line-height: 0.9; }
+.ml-title { font-family: 'Rajdhani', sans-serif; font-weight: 800; font-size: 1.4rem; letter-spacing: 1px; color: #fff; }
+.ml-title span { color: #ffae00; }
+.ml-sub { font-family: 'Rajdhani', sans-serif; font-size: 0.5rem; color: #a1a1aa; letter-spacing: 2px; font-weight: 600; margin-top: 2px; transition: 0.3s; }
+
+/* Анимация при наведении на карточку MediaLog */
+.card-medialog:hover .ml-icon { filter: drop-shadow(0 0 10px #ffae00); transform: scale(1.05); }
+.card-medialog:hover .ml-circle { transform: rotate(180deg); stroke: #fff; }
+.card-medialog:hover .ml-sub { color: #ffae00; letter-spacing: 3px; }
+
+/* === 8. FOOTER === */
 footer { text-align: center; margin-top: 80px; border-top: 1px solid var(--card-border); padding-top: 40px; }
 footer p { color: var(--text-muted); font-size: 0.9rem; opacity: 0.7; }
