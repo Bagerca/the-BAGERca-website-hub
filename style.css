@@ -25,9 +25,23 @@ body {
     font-family: 'Inter', sans-serif;
     min-height: 100vh;
     overflow-x: hidden;
+    position: relative; /* Для Spotlight */
 }
 
-/* === ФОН (Clean Deep Dark) - Чистый, без шума === */
+/* === 1. SPOTLIGHT (Фонарик) === */
+.cursor-glow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+    /* Градиент задается через JS, но дефолт ставим прозрачным */
+    background: transparent; 
+}
+
+/* === 2. ЖИВОЙ ФОН (Floating Orbs) === */
 .background-glow {
     position: fixed;
     top: 0;
@@ -39,7 +53,22 @@ body {
     overflow: hidden;
 }
 
-/* Мягкое фиолетовое свечение сверху-слева */
+/* Анимации плавания */
+@keyframes float1 {
+    0% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(50px, -30px) scale(1.1); }
+    66% { transform: translate(-20px, 40px) scale(0.95); }
+    100% { transform: translate(0, 0) scale(1); }
+}
+
+@keyframes float2 {
+    0% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(-40px, 40px) scale(1.1); }
+    66% { transform: translate(30px, -50px) scale(0.9); }
+    100% { transform: translate(0, 0) scale(1); }
+}
+
+/* Фиолетовое пятно */
 .background-glow::before {
     content: "";
     position: absolute;
@@ -50,9 +79,10 @@ body {
     background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 60%);
     filter: blur(80px);
     opacity: 0.8;
+    animation: float1 15s ease-in-out infinite; /* Запускаем анимацию */
 }
 
-/* Мягкое голубое свечение снизу-справа (для глубины) */
+/* Голубое пятно */
 .background-glow::after {
     content: "";
     position: absolute;
@@ -63,6 +93,7 @@ body {
     background: radial-gradient(circle, rgba(0, 209, 255, 0.08) 0%, transparent 60%);
     filter: blur(80px);
     opacity: 0.6;
+    animation: float2 20s ease-in-out infinite reverse; /* Запускаем анимацию в обратную сторону */
 }
 
 .container {
@@ -77,7 +108,7 @@ body {
     margin-bottom: 50px;
 }
 
-/* Аватар с неоновым кольцом */
+/* Аватар */
 .avatar {
     position: relative;
     width: 110px;
@@ -92,7 +123,7 @@ body {
     width: 100px;
     height: 100px;
     border-radius: 50%;
-    border: 3px solid var(--bg-color); /* Отступ от кольца */
+    border: 3px solid var(--bg-color);
     z-index: 2;
     position: relative;
     object-fit: cover;
@@ -116,20 +147,12 @@ body {
     100% { transform: rotate(360deg); }
 }
 
-/* Переливающийся текст заголовка */
 .shimmer-text {
     font-size: 3rem;
     font-weight: 800;
     letter-spacing: -1px;
-    margin-bottom: 15px;
-    background: linear-gradient(
-        110deg, 
-        #ffffff 20%, 
-        #8b5cf6 40%, 
-        #00d1ff 50%, 
-        #8b5cf6 60%, 
-        #ffffff 80%
-    );
+    margin-bottom: 10px;
+    background: linear-gradient(110deg, #ffffff 20%, #8b5cf6 40%, #00d1ff 50%, #8b5cf6 60%, #ffffff 80%);
     background-size: 200% auto;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -138,6 +161,37 @@ body {
 
 @keyframes shine {
     to { background-position: 200% center; }
+}
+
+/* === 3. СТАТУС (Status Badge) === */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    background: rgba(34, 197, 94, 0.1);
+    border: 1px solid rgba(34, 197, 94, 0.2);
+    border-radius: 20px;
+    color: #4ade80;
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-bottom: 20px;
+    cursor: default;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #4ade80;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(74, 222, 128, 0.5);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.4); }
+    70% { opacity: 0.7; box-shadow: 0 0 0 6px rgba(74, 222, 128, 0); }
+    100% { opacity: 1; box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
 }
 
 .dot { color: var(--primary); }
@@ -263,19 +317,16 @@ body {
     font-size: 1.1rem;
 }
 
-/* === КАРТОЧКА (PREMIUM STYLE) === */
 @keyframes fadeInUp {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
+/* === КАРТОЧКА === */
 .card {
     background: rgba(255, 255, 255, 0.02);
-    /* Сложная граница через тень (выглядит чище) */
     border: 1px solid var(--card-border);
-    /* Внутренний блик сверху (эффект стекла) */
     box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
-    
     border-radius: 24px;
     padding: 24px;
     text-decoration: none;
@@ -286,8 +337,6 @@ body {
     position: relative;
     overflow: hidden;
     backdrop-filter: blur(12px);
-    
-    /* Анимация прикрепляется здесь */
     animation: fadeInUp 0.5s ease backwards; 
 }
 
@@ -299,7 +348,6 @@ body {
 
 .card.featured {
     grid-column: span 2;
-    /* У featured карточки чуть более заметный фон */
     background: linear-gradient(145deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
 }
 
@@ -307,20 +355,17 @@ body {
     .card.featured { grid-column: span 1; }
 }
 
-/* Hover эффекты */
 .card:hover {
     transform: translateY(-6px) scale(1.01);
     background: rgba(255, 255, 255, 0.05);
     border-color: var(--accent-glow);
-    
-    /* Красивое свечение и тень */
     box-shadow: 
-        inset 0 1px 0 0 rgba(255, 255, 255, 0.2), /* Блик */
-        0 20px 40px -10px rgba(0, 0, 0, 0.6),      /* Тень */
-        0 0 20px rgba(139, 92, 246, 0.15);         /* Свечение */
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.2), 
+        0 20px 40px -10px rgba(0, 0, 0, 0.6),      
+        0 0 20px rgba(139, 92, 246, 0.15);         
 }
 
-/* Верхняя часть карточки */
+/* Верх карточки */
 .card-top {
     display: flex;
     justify-content: space-between;
@@ -328,23 +373,50 @@ body {
     margin-bottom: 25px;
 }
 
-.card-icon {
-    display: flex;
-    align-items: center;
-}
-
 .card-icon svg {
     width: 48px;
     height: 48px;
 }
 
-/* Свечение иконки при наведении */
 .card:hover .card-icon svg {
     filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.6));
     transition: filter 0.3s ease;
 }
 
-/* Кнопка-стрелка */
+/* === 4. КНОПКИ ДЕЙСТВИЙ (COPY + ARROW) === */
+.card-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Кнопка копирования */
+.copy-btn {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--card-border);
+    color: var(--text-muted);
+    cursor: pointer;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.copy-btn:hover {
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+    transform: scale(1.1);
+}
+
+.copy-btn.copied {
+    border-color: #4ade80;
+    background: rgba(74, 222, 128, 0.1);
+}
+
+/* Кнопка стрелка */
 .arrow {
     width: 36px;
     height: 36px;
@@ -354,20 +426,15 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    opacity: 0;
-    transform: translate(-10px, 10px);
-    transition: all 0.3s ease;
     font-size: 1.1rem;
+    transition: all 0.3s ease;
 }
 
 .card:hover .arrow {
-    opacity: 1;
-    transform: translate(0, 0);
     background: var(--primary);
     box-shadow: 0 0 15px rgba(139, 92, 246, 0.6);
 }
 
-/* Текст */
 .card-text-wrapper {
     flex-grow: 1;
     margin-bottom: 20px;
@@ -386,7 +453,6 @@ body {
     line-height: 1.5;
 }
 
-/* Теги */
 .card-tags {
     display: flex;
     flex-wrap: wrap;
