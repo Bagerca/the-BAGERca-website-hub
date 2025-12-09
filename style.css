@@ -1,14 +1,18 @@
-/* === ОБЩИЕ НАСТРОЙКИ === */
+/* === 1. ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ И СБРОС === */
 :root {
+    /* Основные цвета */
     --bg-color: #09090b;
-    --primary: #8b5cf6;
-    --secondary: #00d1ff;
+    --primary: #8b5cf6;       /* Фиолетовый */
+    --secondary: #00d1ff;     /* Голубой */
     --accent-glow: rgba(139, 92, 246, 0.5);
     
+    /* Интерфейс */
+    --card-bg: rgba(255, 255, 255, 0.02);
     --card-border: rgba(255, 255, 255, 0.08);
     --text-main: #ffffff;
     --text-muted: #a1a1aa;
     
+    /* Теги */
     --tag-bg: rgba(255, 255, 255, 0.05);
     --tag-text: #ddd6fe;
 }
@@ -25,20 +29,7 @@ body {
     font-family: 'Inter', sans-serif;
     min-height: 100vh;
     overflow-x: hidden;
-    position: relative; /* Для Spotlight */
-}
-
-/* === 1. SPOTLIGHT (Фонарик) === */
-.cursor-glow {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: -1;
-    /* Градиент задается через JS, но дефолт ставим прозрачным */
-    background: transparent; 
+    position: relative;
 }
 
 /* === 2. ЖИВОЙ ФОН (Floating Orbs) === */
@@ -50,25 +41,23 @@ body {
     height: 100%;
     background-color: var(--bg-color);
     z-index: -2;
-    overflow: hidden;
+    overflow: hidden; /* Чтобы пятна не вызывали скролл */
 }
 
-/* Анимации плавания */
+/* Анимации плавания пятен */
 @keyframes float1 {
-    0% { transform: translate(0, 0) scale(1); }
+    0%, 100% { transform: translate(0, 0) scale(1); }
     33% { transform: translate(50px, -30px) scale(1.1); }
     66% { transform: translate(-20px, 40px) scale(0.95); }
-    100% { transform: translate(0, 0) scale(1); }
 }
 
 @keyframes float2 {
-    0% { transform: translate(0, 0) scale(1); }
+    0%, 100% { transform: translate(0, 0) scale(1); }
     33% { transform: translate(-40px, 40px) scale(1.1); }
     66% { transform: translate(30px, -50px) scale(0.9); }
-    100% { transform: translate(0, 0) scale(1); }
 }
 
-/* Фиолетовое пятно */
+/* Фиолетовое пятно (сверху-слева) */
 .background-glow::before {
     content: "";
     position: absolute;
@@ -79,10 +68,10 @@ body {
     background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 60%);
     filter: blur(80px);
     opacity: 0.8;
-    animation: float1 15s ease-in-out infinite; /* Запускаем анимацию */
+    animation: float1 15s ease-in-out infinite;
 }
 
-/* Голубое пятно */
+/* Голубое пятно (снизу-справа) */
 .background-glow::after {
     content: "";
     position: absolute;
@@ -93,7 +82,20 @@ body {
     background: radial-gradient(circle, rgba(0, 209, 255, 0.08) 0%, transparent 60%);
     filter: blur(80px);
     opacity: 0.6;
-    animation: float2 20s ease-in-out infinite reverse; /* Запускаем анимацию в обратную сторону */
+    animation: float2 20s ease-in-out infinite reverse;
+}
+
+/* === 3. ЭФФЕКТ SPOTLIGHT (Фонарик за мышкой) === */
+.cursor-glow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+    /* Градиент задается через JS */
+    transition: background 0.1s ease;
 }
 
 .container {
@@ -102,18 +104,18 @@ body {
     padding: 60px 20px;
 }
 
-/* === ШАПКА === */
+/* === 4. ШАПКА ПРОФИЛЯ === */
 .profile-header {
     text-align: center;
     margin-bottom: 50px;
 }
 
-/* Аватар */
+/* Аватар с неоновым кольцом */
 .avatar {
     position: relative;
     width: 110px;
     height: 110px;
-    margin: 0 auto 25px;
+    margin: 0 auto 20px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -123,7 +125,7 @@ body {
     width: 100px;
     height: 100px;
     border-radius: 50%;
-    border: 3px solid var(--bg-color);
+    border: 3px solid var(--bg-color); /* Отступ от кольца */
     z-index: 2;
     position: relative;
     object-fit: cover;
@@ -131,28 +133,33 @@ body {
 
 .avatar-ring {
     position: absolute;
-    top: 0;
-    left: 0;
     width: 100%;
     height: 100%;
     border-radius: 50%;
     background: linear-gradient(45deg, var(--primary), var(--secondary), #ff4b6a);
     z-index: 1;
-    animation: spin 3s linear infinite;
-    filter: blur(2px);
+    animation: spin 4s linear infinite;
+    filter: blur(3px);
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
 
+/* Переливающийся текст (Shimmer) */
 .shimmer-text {
     font-size: 3rem;
     font-weight: 800;
     letter-spacing: -1px;
-    margin-bottom: 10px;
-    background: linear-gradient(110deg, #ffffff 20%, #8b5cf6 40%, #00d1ff 50%, #8b5cf6 60%, #ffffff 80%);
+    margin-bottom: 15px;
+    background: linear-gradient(
+        110deg, 
+        #ffffff 20%, 
+        var(--primary) 40%, 
+        var(--secondary) 50%, 
+        var(--primary) 60%, 
+        #ffffff 80%
+    );
     background-size: 200% auto;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -163,7 +170,7 @@ body {
     to { background-position: 200% center; }
 }
 
-/* === 3. СТАТУС (Status Badge) === */
+/* Статус "Available for offers" */
 .status-badge {
     display: inline-flex;
     align-items: center;
@@ -177,6 +184,7 @@ body {
     font-weight: 500;
     margin-bottom: 20px;
     cursor: default;
+    user-select: none;
 }
 
 .status-dot {
@@ -189,12 +197,10 @@ body {
 }
 
 @keyframes pulse {
-    0% { opacity: 1; box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.4); }
-    70% { opacity: 0.7; box-shadow: 0 0 0 6px rgba(74, 222, 128, 0); }
-    100% { opacity: 1; box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
 }
-
-.dot { color: var(--primary); }
 
 .bio {
     color: var(--text-muted);
@@ -204,7 +210,9 @@ body {
     line-height: 1.6;
 }
 
-/* === ПОИСК === */
+.dot { color: var(--primary); }
+
+/* === 5. ПОИСК И ФИЛЬТРЫ === */
 .search-wrapper {
     display: flex;
     justify-content: center;
@@ -243,12 +251,11 @@ body {
     right: 15px;
     top: 50%;
     transform: translateY(-50%);
-    color: var(--text-muted);
+    opacity: 0.5;
     pointer-events: none;
     display: flex;
 }
 
-/* === ФИЛЬТРЫ === */
 .filters {
     display: flex;
     justify-content: center;
@@ -271,18 +278,19 @@ body {
 }
 
 .filter-btn:hover {
-    border-color: var(--text-main);
-    color: var(--text-main);
-    background: rgba(255,255,255,0.05);
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+    border-color: #fff;
 }
 
 .filter-btn.active {
-    background: var(--text-main);
-    color: var(--bg-color);
-    border-color: var(--text-main);
+    background: #fff;
+    color: #000;
+    border-color: #fff;
     font-weight: 700;
 }
 
+/* Мобильный скролл фильтров */
 @media (max-width: 768px) {
     .filters {
         justify-content: flex-start;
@@ -290,17 +298,14 @@ body {
         padding-bottom: 5px;
         flex-wrap: nowrap;
         scrollbar-width: none;
-        -webkit-overflow-scrolling: touch;
-        margin-left: -20px;
-        margin-right: -20px;
-        padding-left: 20px;
-        padding-right: 20px;
+        margin: 0 -20px 40px;
+        padding: 0 20px 5px;
     }
     .filters::-webkit-scrollbar { display: none; }
     .filter-btn { flex-shrink: 0; }
 }
 
-/* === СЕТКА ПРОЕКТОВ === */
+/* === 6. СЕТКА И КАРТОЧКИ === */
 .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -314,38 +319,31 @@ body {
     text-align: center;
     padding: 40px;
     color: var(--text-muted);
-    font-size: 1.1rem;
 }
 
+/* Анимация появления */
 @keyframes fadeInUp {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* === КАРТОЧКА === */
 .card {
-    background: rgba(255, 255, 255, 0.02);
+    background: var(--card-bg);
     border: 1px solid var(--card-border);
-    box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
     border-radius: 24px;
     padding: 24px;
     text-decoration: none;
     color: inherit;
-    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     display: flex;
     flex-direction: column;
     position: relative;
     overflow: hidden;
     backdrop-filter: blur(12px);
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     animation: fadeInUp 0.5s ease backwards; 
 }
 
-.card-content {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-}
-
+/* Большая карточка */
 .card.featured {
     grid-column: span 2;
     background: linear-gradient(145deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
@@ -355,50 +353,66 @@ body {
     .card.featured { grid-column: span 1; }
 }
 
+/* Hover эффекты */
 .card:hover {
-    transform: translateY(-6px) scale(1.01);
+    transform: translateY(-6px);
     background: rgba(255, 255, 255, 0.05);
     border-color: var(--accent-glow);
     box-shadow: 
-        inset 0 1px 0 0 rgba(255, 255, 255, 0.2), 
-        0 20px 40px -10px rgba(0, 0, 0, 0.6),      
-        0 0 20px rgba(139, 92, 246, 0.15);         
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.2), /* Блик сверху */
+        0 20px 40px -10px rgba(0, 0, 0, 0.5);      /* Тень */
 }
 
-/* Верх карточки */
+/* Бейдж "NEW" */
+.new-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: linear-gradient(135deg, #ff4b6a, #ff9068);
+    color: white;
+    font-size: 0.65rem;
+    font-weight: 800;
+    padding: 4px 10px;
+    border-radius: 20px;
+    box-shadow: 0 0 15px rgba(255, 75, 106, 0.4);
+    letter-spacing: 1px;
+    z-index: 10;
+}
+
+/* Внутренности карточки */
+.card-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
 .card-top {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: center; /* Центрируем иконку и кнопки */
     margin-bottom: 25px;
 }
 
-.card-icon svg {
-    width: 48px;
-    height: 48px;
+.card-icon {
+    display: flex;
+    align-items: center;
 }
 
-.card:hover .card-icon svg {
-    filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.6));
-    transition: filter 0.3s ease;
-}
-
-/* === 4. КНОПКИ ДЕЙСТВИЙ (COPY + ARROW) === */
+/* Действия (Копировать + Стрелка) */
 .card-actions {
     display: flex;
     align-items: center;
     gap: 8px;
 }
 
-/* Кнопка копирования */
 .copy-btn {
     background: rgba(255,255,255,0.05);
-    border: 1px solid var(--card-border);
+    border: none;
     color: var(--text-muted);
-    cursor: pointer;
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
+    cursor: pointer;
     transition: all 0.2s;
     display: flex;
     align-items: center;
@@ -406,35 +420,31 @@ body {
 }
 
 .copy-btn:hover {
-    background: rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.2);
     color: #fff;
     transform: scale(1.1);
 }
 
-.copy-btn.copied {
-    border-color: #4ade80;
-    background: rgba(74, 222, 128, 0.1);
-}
-
-/* Кнопка стрелка */
 .arrow {
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.05);
     color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.1rem;
+    font-size: 1rem;
     transition: all 0.3s ease;
 }
 
 .card:hover .arrow {
     background: var(--primary);
-    box-shadow: 0 0 15px rgba(139, 92, 246, 0.6);
+    transform: rotate(45deg); /* Поворот стрелки при наведении */
+    box-shadow: 0 0 15px rgba(139, 92, 246, 0.5);
 }
 
+/* Текст */
 .card-text-wrapper {
     flex-grow: 1;
     margin-bottom: 20px;
@@ -453,6 +463,7 @@ body {
     line-height: 1.5;
 }
 
+/* Теги технологий */
 .card-tags {
     display: flex;
     flex-wrap: wrap;
@@ -469,7 +480,7 @@ body {
     border-radius: 6px;
 }
 
-/* === FOOTER === */
+/* === 7. FOOTER === */
 footer {
     text-align: center;
     margin-top: 80px;
