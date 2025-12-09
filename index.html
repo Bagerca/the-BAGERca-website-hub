@@ -5,10 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bagerca Hub | Creative Developer</title>
     
-    <!-- SEO -->
-    <meta name="description" content="Портфолио Bagerca. MediaLog, NFC Tools, Crazy Wall и другие проекты.">
+    <!-- SEO & Open Graph -->
+    <meta name="description" content="Портфолио Bagerca. MediaLog, NFC Tools, Crazy Wall и другие веб-приложения.">
     <meta property="og:type" content="website">
     <meta property="og:title" content="Bagerca Hub">
+    <meta property="og:description" content="Frontend Developer & Creative Coder Projects.">
     <meta property="og:image" content="https://github.com/bagerca.png">
     
     <link rel="stylesheet" href="style.css">
@@ -16,12 +17,14 @@
     <!-- Шрифт Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <!-- Живой фон и SpotLight -->
+    <!-- Живой фон (Ambient) -->
     <div class="background-glow"></div>
+    
+    <!-- Эффект Spotlight (Уменьшенный) -->
     <div class="cursor-glow" id="cursor-glow"></div>
 
     <div class="container">
@@ -45,8 +48,10 @@
         <!-- Поиск -->
         <div class="search-wrapper">
             <div class="search-container">
-                <input type="text" id="search-input" placeholder="Найти проект...">
-                <span class="search-icon">🔍</span>
+                <input type="text" id="search-input" placeholder="Найти проект, технологию...">
+                <span class="search-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </span>
             </div>
         </div>
 
@@ -56,6 +61,7 @@
             <button class="filter-btn" data-filter="app">Apps</button>
             <button class="filter-btn" data-filter="tool">Tools</button>
             <button class="filter-btn" data-filter="creative">Creative</button>
+            <button class="filter-btn" data-filter="landing">Promo</button>
         </nav>
 
         <!-- Сетка проектов -->
@@ -67,18 +73,30 @@
     </div>
 
     <script>
-        // === БАЗА ДАННЫХ ===
-        // new: true добавляет бейдж "NEW"
+        // === БАЗА ДАННЫХ ПРОЕКТОВ ===
         const projects = [
             {
                 title: "MediaLog",
                 category: "app",
                 url: "https://bagerca.github.io/MediaLog/index.html",
                 desc: "Ваш личный трекер фильмов и медиа. Стильный UI.",
-                stack: ["App", "Tracker"],
+                stack: ["App", "Tracker", "LocalStore"],
                 emoji: "🎬",
-                new: true,       // <--- НОВЫЙ
-                featured: true   // Большая карточка
+                new: true,
+                featured: true
+            },
+            {
+                title: "XOXO Messenger",
+                category: "app",
+                url: "https://bagerca.github.io/XOXO-Messenger/",
+                desc: "Современный мессенджер с уникальными анимациями.",
+                stack: ["WebSocket", "UI Kit"],
+                // Чистая SVG иконка
+                icon: `
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color: #c084fc;">
+                    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                </svg>`,
+                featured: false
             },
             {
                 title: "Tiny Bunny Billet",
@@ -87,17 +105,17 @@
                 desc: "Фан-проект билета по вселенной Tiny Bunny (Зайчик).",
                 stack: ["Fan Art", "Interactive"],
                 emoji: "🐰",
-                new: true        // <--- НОВЫЙ
+                new: true
             },
             {
                 title: "Crazy Wall",
                 category: "creative",
                 url: "https://bagerca.github.io/Crazy-Wall/",
-                desc: "Интерактивная детективная доска. Соединяй факты нитями.",
+                desc: "Детективная доска. Соединяй факты нитями.",
                 stack: ["Canvas API", "Drag&Drop"],
                 emoji: "🕵️‍♂️",
-                featured: true,
-                new: true        // <--- ОТМЕТИЛИ КАК НОВЫЙ
+                new: true,
+                featured: true
             },
             {
                 title: "NFC Message",
@@ -106,30 +124,34 @@
                 desc: "Запись и чтение NFC меток прямо в браузере.",
                 stack: ["Web NFC", "PWA"],
                 emoji: "📡",
-                new: true        // <--- ОТМЕТИЛИ КАК НОВЫЙ
-            },
-            {
-                title: "XOXO Messenger",
-                category: "app",
-                url: "https://bagerca.github.io/XOXO-Messenger/",
-                desc: "Современный мессенджер с уникальными анимациями.",
-                stack: ["WebSocket", "UI Kit"],
-                icon: `
-                <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M50 90C22 70 8 55 8 36C8 19 21 9 35 9C43 9 49 13 50 16C51 13 57 9 65 9C79 9 92 19 92 36C92 55 78 70 50 90Z" 
-                          stroke="#8A2BE2" stroke-width="5" stroke-linecap="round" fill="none"/>
-                    <path d="M28 32 L40 46 M40 32 L28 46" stroke="white" stroke-width="4" stroke-linecap="round"/>
-                    <circle cx="70" cy="39" r="8" stroke="white" stroke-width="4"/>
-                </svg>`,
-                featured: false
+                new: true
             },
             {
                 title: "Music Player",
                 category: "app",
                 url: "https://bagerca.github.io/Music-Player/",
-                desc: "Кастомный веб-плеер с визуализацией.",
+                desc: "Кастомный веб-плеер с визуализацией аудио.",
                 stack: ["Audio API", "Glassmorphism"],
-                emoji: "🎵",
+                icon: `
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color: #00d1ff;">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polygon points="10 8 16 12 10 16 10 8"></polygon>
+                </svg>`,
+                featured: false
+            },
+            {
+                title: "Sovremennik",
+                category: "landing",
+                url: "https://bagerca.github.io/Sovremennik-Fan-Cinema/",
+                desc: "Фан-страница кинотеатра с расписанием.",
+                stack: ["HTML/CSS", "Grid"],
+                icon: `
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color: #ff4b6a;">
+                    <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect>
+                    <line x1="7" y1="2" x2="7" y2="22"></line>
+                    <line x1="17" y1="2" x2="17" y2="22"></line>
+                    <line x1="2" y1="12" x2="22" y2="12"></line>
+                </svg>`,
                 featured: false
             },
             {
@@ -142,20 +164,20 @@
                 featured: false
             },
             {
-                title: "Sovremennik",
+                title: "KsushaSher",
                 category: "landing",
-                url: "https://bagerca.github.io/Sovremennik-Fan-Cinema/",
-                desc: "Фан-страница кинотеатра с расписанием.",
-                stack: ["HTML/CSS", "Grid"],
-                emoji: "🍿",
+                url: "https://bagerca.github.io/-KsushaSher-Streamer/",
+                desc: "Портфолио для стримера с интеграцией Twitch.",
+                stack: ["Design", "Animation"],
+                emoji: "🎮",
                 featured: false
             },
             {
                 title: "Bendy Chronicles",
                 category: "creative",
                 url: "https://bagerca.github.io/Bendy-Chronicles-RU/",
-                desc: "Атмосферный проект по Bendy.",
-                stack: ["Sepia", "Story"],
+                desc: "Атмосферный фан-проект по вселенной Bendy.",
+                stack: ["Sepia Style", "Story"],
                 emoji: "✒️",
                 featured: false
             },
@@ -163,9 +185,45 @@
                 title: "Students List",
                 category: "tool",
                 url: "https://bagerca.github.io/List-of-Students/",
-                desc: "CRUD система списка студентов.",
-                stack: ["DOM", "LocalStore"],
+                desc: "CRUD система управления списком студентов.",
+                stack: ["DOM", "LocalStorage"],
                 emoji: "📝",
+                featured: false
+            },
+            {
+                title: "Dine Relax",
+                category: "landing",
+                url: "https://bagerca.github.io/Dine-Relax/",
+                desc: "Лендинг для ресторана. Чистый минимализм.",
+                stack: ["UI/UX", "Layout"],
+                emoji: "🥗",
+                featured: false
+            },
+            {
+                title: "Valentay Day",
+                category: "creative",
+                url: "https://bagerca.github.io/Valentay-Day/",
+                desc: "Интерактивная валентинка с сюрпризом.",
+                stack: ["CSS Art", "Interactive"],
+                emoji: "💘",
+                featured: false
+            },
+            {
+                title: "X Post Gen",
+                category: "tool",
+                url: "https://bagerca.github.io/X-post-picture/",
+                desc: "Генератор фейковых постов для соцсетей.",
+                stack: ["Canvas", "Image Gen"],
+                emoji: "🖼️",
+                featured: false
+            },
+            {
+                title: "Old Pawnbroker",
+                category: "creative",
+                url: "https://bagerca.github.io/The-old-pawnbroker/",
+                desc: "Атмосферный веб-проект в стиле ретро.",
+                stack: ["Retro UI", "Atmosphere"],
+                emoji: "🕰️",
                 featured: false
             }
         ];
@@ -183,11 +241,14 @@
             navigator.clipboard.writeText(url).then(() => {
                 const btn = event.currentTarget;
                 const original = btn.innerHTML;
-                btn.innerHTML = `✓`;
-                btn.style.color = '#4ade80';
+                
+                // Зеленая галочка
+                btn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+                btn.classList.add('copied');
+                
                 setTimeout(() => { 
                     btn.innerHTML = original; 
-                    btn.style.color = ''; 
+                    btn.classList.remove('copied');
                 }, 1500);
             });
         }
@@ -200,22 +261,23 @@
             projects.forEach((project) => {
                 const matchesFilter = currentFilter === 'all' || project.category === currentFilter;
                 const matchesSearch = project.title.toLowerCase().includes(query) || 
-                                      project.desc.toLowerCase().includes(query);
+                                      project.desc.toLowerCase().includes(query) ||
+                                      (project.stack && project.stack.some(tag => tag.toLowerCase().includes(query)));
 
                 if (matchesFilter && matchesSearch) {
                     const card = document.createElement('a');
                     card.href = project.url;
                     card.target = "_blank";
-                    card.className = `card ${project.featured ? 'featured' : ''}`;
+                    // Добавляем класс has-new, если проект новый, чтобы сдвинуть контент вниз
+                    card.className = `card ${project.featured ? 'featured' : ''} ${project.new ? 'has-new' : ''}`;
                     card.style.animationDelay = `${count * 0.05}s`;
                     count++;
 
-                    const iconHtml = project.icon ? project.icon : `<div style="font-size: 3rem;">${project.emoji}</div>`;
+                    const iconHtml = project.icon ? project.icon : `<div style="font-size: 2.5rem;">${project.emoji}</div>`;
                     
-                    // БЕЙДЖ NEW
+                    // Стильный бейдж NEW
                     const newBadge = project.new ? `<div class="new-badge">NEW</div>` : '';
 
-                    // ТЕГИ
                     const tagsHtml = project.stack 
                         ? `<div class="card-tags">${project.stack.map(tag => `<span>${tag}</span>`).join('')}</div>`
                         : '';
@@ -227,9 +289,11 @@
                                 <div class="card-icon">${iconHtml}</div>
                                 <div class="card-actions">
                                     <button class="copy-btn" title="Copy Link" onclick="copyLink(event, '${project.url}')">
-                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                                     </button>
-                                    <div class="arrow">↗</div>
+                                    <div class="arrow">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+                                    </div>
                                 </div>
                             </div>
                             <div class="card-text-wrapper">
@@ -242,6 +306,10 @@
                     grid.appendChild(card);
                 }
             });
+
+            if(grid.innerHTML === '') {
+                grid.innerHTML = `<div class="no-results">Ничего не найдено 😔</div>`;
+            }
         }
 
         searchInput.addEventListener('input', renderProjects);
@@ -255,10 +323,10 @@
             });
         });
 
-        // Spotlight Effect
+        // Spotlight (Уменьшенный)
         const cursorGlow = document.getElementById('cursor-glow');
         document.addEventListener('mousemove', (e) => {
-            cursorGlow.style.background = `radial-gradient(600px circle at ${e.clientX}px ${e.clientY}px, rgba(139, 92, 246, 0.15), transparent 40%)`;
+            cursorGlow.style.background = `radial-gradient(350px circle at ${e.clientX}px ${e.clientY}px, rgba(139, 92, 246, 0.15), transparent 50%)`;
         });
 
         renderProjects();
