@@ -1,13 +1,15 @@
 /* === ОБЩИЕ НАСТРОЙКИ === */
 :root {
     --bg-color: #09090b;
-    --card-bg: rgba(255, 255, 255, 0.03);
+    --primary: #8b5cf6;
+    --secondary: #00d1ff;
+    --accent-glow: rgba(139, 92, 246, 0.5);
+    
     --card-border: rgba(255, 255, 255, 0.08);
-    --card-hover-border: rgba(255, 255, 255, 0.2);
-    --primary: #8b5cf6; /* Фиолетовый акцент */
     --text-main: #ffffff;
     --text-muted: #a1a1aa;
-    --tag-bg: rgba(139, 92, 246, 0.15);
+    
+    --tag-bg: rgba(255, 255, 255, 0.05);
     --tag-text: #ddd6fe;
 }
 
@@ -25,30 +27,42 @@ body {
     overflow-x: hidden;
 }
 
-/* Фон с градиентом и шумом */
+/* === ФОН (Clean Deep Dark) - Чистый, без шума === */
 .background-glow {
     position: fixed;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle at center, rgba(139, 92, 246, 0.12) 0%, transparent 60%);
-    z-index: -2;
-    pointer-events: none;
-}
-
-/* Эффект зерна (Noise) */
-.background-glow::after {
-    content: "";
-    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    /* SVG Noise Filter */
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.07'/%3E%3C/svg%3E");
-    z-index: -1;
-    pointer-events: none;
+    background-color: var(--bg-color);
+    z-index: -2;
+    overflow: hidden;
+}
+
+/* Мягкое фиолетовое свечение сверху-слева */
+.background-glow::before {
+    content: "";
+    position: absolute;
+    top: -20%;
+    left: -20%;
+    width: 80vw;
+    height: 80vw;
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 60%);
+    filter: blur(80px);
+    opacity: 0.8;
+}
+
+/* Мягкое голубое свечение снизу-справа (для глубины) */
+.background-glow::after {
+    content: "";
+    position: absolute;
+    bottom: -20%;
+    right: -20%;
+    width: 70vw;
+    height: 70vw;
+    background: radial-gradient(circle, rgba(0, 209, 255, 0.08) 0%, transparent 60%);
+    filter: blur(80px);
+    opacity: 0.6;
 }
 
 .container {
@@ -60,33 +74,73 @@ body {
 /* === ШАПКА === */
 .profile-header {
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 50px;
+}
+
+/* Аватар с неоновым кольцом */
+.avatar {
+    position: relative;
+    width: 110px;
+    height: 110px;
+    margin: 0 auto 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .avatar img {
     width: 100px;
     height: 100px;
     border-radius: 50%;
-    border: 2px solid rgba(255,255,255,0.1);
-    margin-bottom: 20px;
-    box-shadow: 0 0 30px rgba(139, 92, 246, 0.25);
-    transition: transform 0.3s ease;
+    border: 3px solid var(--bg-color); /* Отступ от кольца */
+    z-index: 2;
+    position: relative;
+    object-fit: cover;
 }
 
-.avatar img:hover {
-    transform: scale(1.05) rotate(5deg);
+.avatar-ring {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: linear-gradient(45deg, var(--primary), var(--secondary), #ff4b6a);
+    z-index: 1;
+    animation: spin 3s linear infinite;
+    filter: blur(2px);
 }
 
-h1 {
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Переливающийся текст заголовка */
+.shimmer-text {
     font-size: 3rem;
     font-weight: 800;
     letter-spacing: -1px;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
+    background: linear-gradient(
+        110deg, 
+        #ffffff 20%, 
+        #8b5cf6 40%, 
+        #00d1ff 50%, 
+        #8b5cf6 60%, 
+        #ffffff 80%
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shine 5s linear infinite;
 }
 
-.dot {
-    color: var(--primary);
+@keyframes shine {
+    to { background-position: 200% center; }
 }
+
+.dot { color: var(--primary); }
 
 .bio {
     color: var(--text-muted);
@@ -175,7 +229,6 @@ h1 {
     font-weight: 700;
 }
 
-/* === МОБИЛЬНЫЙ СКРОЛЛ ДЛЯ ФИЛЬТРОВ === */
 @media (max-width: 768px) {
     .filters {
         justify-content: flex-start;
@@ -189,12 +242,8 @@ h1 {
         padding-left: 20px;
         padding-right: 20px;
     }
-    .filters::-webkit-scrollbar {
-        display: none;
-    }
-    .filter-btn {
-        flex-shrink: 0;
-    }
+    .filters::-webkit-scrollbar { display: none; }
+    .filter-btn { flex-shrink: 0; }
 }
 
 /* === СЕТКА ПРОЕКТОВ === */
@@ -214,32 +263,30 @@ h1 {
     font-size: 1.1rem;
 }
 
-/* АНИМАЦИЯ ПОЯВЛЕНИЯ */
+/* === КАРТОЧКА (PREMIUM STYLE) === */
 @keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-/* КАРТОЧКА */
 .card {
-    background: var(--card-bg);
+    background: rgba(255, 255, 255, 0.02);
+    /* Сложная граница через тень (выглядит чище) */
     border: 1px solid var(--card-border);
+    /* Внутренний блик сверху (эффект стекла) */
+    box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+    
     border-radius: 24px;
     padding: 24px;
     text-decoration: none;
     color: inherit;
-    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     display: flex;
     flex-direction: column;
     position: relative;
     overflow: hidden;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(12px);
+    
     /* Анимация прикрепляется здесь */
     animation: fadeInUp 0.5s ease backwards; 
 }
@@ -252,23 +299,28 @@ h1 {
 
 .card.featured {
     grid-column: span 2;
-    background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
+    /* У featured карточки чуть более заметный фон */
+    background: linear-gradient(145deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
 }
 
 @media (max-width: 768px) {
-    .card.featured {
-        grid-column: span 1;
-    }
+    .card.featured { grid-column: span 1; }
 }
 
+/* Hover эффекты */
 .card:hover {
-    transform: translateY(-5px);
-    border-color: var(--card-hover-border);
-    background: rgba(255, 255, 255, 0.06);
-    box-shadow: 0 15px 40px -10px rgba(0,0,0,0.5);
+    transform: translateY(-6px) scale(1.01);
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--accent-glow);
+    
+    /* Красивое свечение и тень */
+    box-shadow: 
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.2), /* Блик */
+        0 20px 40px -10px rgba(0, 0, 0, 0.6),      /* Тень */
+        0 0 20px rgba(139, 92, 246, 0.15);         /* Свечение */
 }
 
-/* ВЕРХ КАРТОЧКИ */
+/* Верхняя часть карточки */
 .card-top {
     display: flex;
     justify-content: space-between;
@@ -277,8 +329,6 @@ h1 {
 }
 
 .card-icon {
-    font-size: 2.5rem;
-    line-height: 1;
     display: flex;
     align-items: center;
 }
@@ -288,34 +338,38 @@ h1 {
     height: 48px;
 }
 
+/* Свечение иконки при наведении */
 .card:hover .card-icon svg {
     filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.6));
     transition: filter 0.3s ease;
 }
 
+/* Кнопка-стрелка */
 .arrow {
-    font-size: 1.2rem;
-    opacity: 0;
-    transform: translateX(-10px) translateY(10px);
-    transition: all 0.3s ease;
-    color: var(--primary);
-    background: rgba(139, 92, 246, 0.1);
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 50%;
+    opacity: 0;
+    transform: translate(-10px, 10px);
+    transition: all 0.3s ease;
+    font-size: 1.1rem;
 }
 
 .card:hover .arrow {
     opacity: 1;
-    transform: translateX(0) translateY(0);
+    transform: translate(0, 0);
+    background: var(--primary);
+    box-shadow: 0 0 15px rgba(139, 92, 246, 0.6);
 }
 
-/* ТЕКСТ КАРТОЧКИ */
+/* Текст */
 .card-text-wrapper {
-    flex-grow: 1; /* Толкает теги вниз */
+    flex-grow: 1;
     margin-bottom: 20px;
 }
 
@@ -332,7 +386,7 @@ h1 {
     line-height: 1.5;
 }
 
-/* ТЕГИ ТЕХНОЛОГИЙ */
+/* Теги */
 .card-tags {
     display: flex;
     flex-wrap: wrap;
@@ -347,7 +401,6 @@ h1 {
     color: var(--tag-text);
     padding: 4px 10px;
     border-radius: 6px;
-    letter-spacing: 0.3px;
 }
 
 /* === FOOTER === */
