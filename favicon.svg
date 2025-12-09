@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <!-- Твой фирменный градиент -->
+    <linearGradient id="brandGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8b5cf6"/>
+      <stop offset="50%" stop-color="#00d1ff"/>
+      <stop offset="100%" stop-color="#ff4b6a"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Фон (цвет твоего сайта) -->
+  <rect width="64" height="64" rx="16" fill="#09090b"/>
+  
+  <!-- Буква B -->
+  <path d="M20 12H34C42.8 12 48 16.5 48 23C48 27.5 45 30.5 41 32C46 33.5 50 37.5 50 43C50 50.5 43.5 56 34 56H20V12ZM28 30H32C36.5 30 39.5 28 39.5 24.5C39.5 21 37 19 32 19H28V30ZM28 49H34C39.5 49 42 46.5 42 42.5C42 38.5 39 36 33 36H28V49Z" 
+        fill="url(#brandGrad)"/>
+</svg>
