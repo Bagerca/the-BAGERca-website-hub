@@ -164,6 +164,8 @@ body {
 }
 
 .card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 25px; height: 48px; }
+
+/* Стандартная иконка */
 .card-icon { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; color: #fff; }
 .card-icon svg { width: 100%; height: 100%; display: block; stroke-width: 1.5; }
 
@@ -204,52 +206,51 @@ body {
     color: var(--tag-text); padding: 4px 10px; border-radius: 6px;
 }
 
-/* === 7. MEDIALOG SPECIAL STYLE (Золотой Логотип) === */
+/* === 7. MEDIALOG SPECIAL STYLE (ИСПРАВЛЕНО) === */
+
+/* Разрешаем контейнеру иконки растягиваться под текст */
 .card-medialog .card-icon {
-    width: auto; /* Разрешаем иконке растянуться, так как там текст */
+    width: auto !important; 
+    height: auto !important;
     justify-content: flex-start;
+    overflow: visible;
 }
 
-/* Скрываем стандартный заголовок h3 в этой карточке, так как название в логотипе */
+/* Скрываем стандартный заголовок */
 .card-medialog .card-text-wrapper h3 {
     display: none;
 }
 
 /* Обёртка лого */
 .ml-logo-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+    display: flex; align-items: center; gap: 12px; position: relative; z-index: 2;
 }
 
-/* Иконка шестиугольника */
+/* ФИКС: Жесткие размеры SVG-иконки */
 .ml-icon {
-    width: 42px; height: 42px;
+    width: 42px !important; height: 42px !important; min-width: 42px;
     fill: none; stroke: #ffae00; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
-    transition: 0.3s ease;
-    filter: drop-shadow(0 0 5px rgba(255, 174, 0, 0.3));
+    transition: 0.3s ease; filter: drop-shadow(0 0 5px rgba(255, 174, 0, 0.3));
 }
 
-/* Круг внутри */
-.ml-circle {
-    transform-origin: center;
-    transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
+.ml-circle { transform-origin: center; transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
 
-/* Точка REC */
-.ml-dot {
-    fill: #ffae00; stroke: none;
-    animation: mlPulse 3s infinite;
-}
+.ml-dot { fill: #ffae00; stroke: none; animation: mlPulse 3s infinite; }
 @keyframes mlPulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.6; transform: scale(0.7); } }
 
 /* Текстовый блок логотипа */
-.ml-text-block { display: flex; flex-direction: column; line-height: 0.9; }
-.ml-title { font-family: 'Rajdhani', sans-serif; font-weight: 800; font-size: 1.4rem; letter-spacing: 1px; color: #fff; }
+.ml-text-block { display: flex; flex-direction: column; line-height: 0.9; justify-content: center; }
+.ml-title { 
+    font-family: 'Rajdhani', sans-serif; font-weight: 800; font-size: 1.4rem; 
+    letter-spacing: 1px; color: #fff; white-space: nowrap; 
+}
 .ml-title span { color: #ffae00; }
-.ml-sub { font-family: 'Rajdhani', sans-serif; font-size: 0.5rem; color: #a1a1aa; letter-spacing: 2px; font-weight: 600; margin-top: 2px; transition: 0.3s; }
+.ml-sub { 
+    font-family: 'Rajdhani', sans-serif; font-size: 0.6rem; color: #a1a1aa; 
+    letter-spacing: 2px; font-weight: 600; margin-top: 3px; transition: 0.3s; white-space: nowrap; 
+}
 
-/* Анимация при наведении на карточку MediaLog */
+/* Анимация при наведении */
 .card-medialog:hover .ml-icon { filter: drop-shadow(0 0 10px #ffae00); transform: scale(1.05); }
 .card-medialog:hover .ml-circle { transform: rotate(180deg); stroke: #fff; }
 .card-medialog:hover .ml-sub { color: #ffae00; letter-spacing: 3px; }
