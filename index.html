@@ -22,15 +22,21 @@
 </head>
 <body>
 
+    <!-- Чистый фон с мягкими пятнами -->
     <div class="background-glow"></div>
 
     <div class="container">
         <!-- Шапка -->
         <header class="profile-header">
             <div class="avatar">
+                <!-- Вращающееся кольцо -->
+                <div class="avatar-ring"></div>
                 <img src="https://github.com/bagerca.png" alt="Bagerca">
             </div>
-            <h1>Bagerca<span class="dot">.</span>Hub</h1>
+            
+            <!-- Переливающийся текст -->
+            <h1 class="shimmer-text">Bagerca<span class="dot">.</span>Hub</h1>
+            
             <p class="bio">Frontend Developer & Creative Coder. Коллекция моих проектов, утилит и экспериментов.</p>
         </header>
 
@@ -65,7 +71,6 @@
 
     <script>
         // === БАЗА ДАННЫХ ПРОЕКТОВ ===
-        // Добавлен массив 'stack' для технологий
         const projects = [
             {
                 title: "XOXO Messenger",
@@ -247,11 +252,11 @@
                     card.target = "_blank";
                     card.className = `card ${project.featured ? 'featured' : ''}`;
                     
-                    // Добавляем задержку для анимации появления
+                    // Добавляем задержку для анимации появления (лесенка)
                     card.style.animationDelay = `${count * 0.05}s`;
                     count++;
 
-                    const iconHtml = project.icon ? project.icon : project.emoji;
+                    const iconHtml = project.icon ? project.icon : `<div style="font-size: 3rem;">${project.emoji}</div>`;
                     
                     // Генерация тегов
                     const tagsHtml = project.stack 
